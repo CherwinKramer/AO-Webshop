@@ -8,19 +8,15 @@
 <!-- <p:messages id="messages" /> -->
 <p:growl id="messages" />
 
-<p:dataTable value="#{checkListController.checks}" var="check" id="checkTable">
+<p:dataTable value="#{categoryBean.categories}" var="category" id="categoryTable">
 	<p:column headerText="name">
-		#{check.name}
+		<h:outputText value="#{category.name}" />
 	</p:column>
-	<p:column headerText="url">
-		<a href="#{check.url}" target="_blank">
-			#{check.url}
-		</a>
-	</p:column>
+	
 	<p:column headerText="operations">
 		<h:form>
-			<p:commandButton value="edit" action="#{checkListController.setCheck(check)}" update=":checkForm" resetValues="true" oncomplete="PF('checkDialog').show()" />
-			<p:commandButton value="remove" action="#{checkListController.remove(check)}" update=":checkTable, :messages">
+			<p:commandButton value="edit" action="#{categoryBean.setCategory(category)}" update=":categoryForm" resetValues="true" oncomplete="PF('categoryDialog').show()" />
+			<p:commandButton value="remove" action="#{categoryBean.remove(category)}" update=":categoryTable, :messages">
 				<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
 			</p:commandButton>
 		</h:form>
@@ -29,26 +25,23 @@
 
 <br />
 <h:form>
-	<p:commandButton value="add check" action="#{checkListController.clear()}" 
-					 update=":checkForm" 
-					 oncomplete="PF('checkDialog').show()"
+	<p:commandButton value="add category" action="#{categoryBean.clear()}" 
+					 update=":categoryForm" 
+					 oncomplete="PF('categoryDialog').show()"
 					 resetValues="true" />
 </h:form>
 
-<p:dialog widgetVar="checkDialog" closeOnEscape="true" modal="true" header="check">
-<h:form id="checkForm">
+<p:dialog widgetVar="categoryDialog" closeOnEscape="true" modal="true" header="check">
+<h:form id="categoryForm">
 	<p:messages />
 	<p:focus />
 	<p:panelGrid columns="2">
-		name:
-		<p:inputText value="#{checkListController.check.name}" />
-		
-		url:
-		<p:inputText value="#{checkListController.check.url}" />
+		<p:outputLabel value="Name:" />
+		<p:inputText value="#{categoryBean.category.name}" />
 	</p:panelGrid>
-	<p:commandButton value="save" action="#{checkListController.save()}" 
-					 update="checkForm, :checkTable"
-					 oncomplete="handleDialogSubmit(args, 'checkDialog')" />
+	<p:commandButton value="save" action="#{categoryBean.save()}" 
+					 update="categoryForm, :categoryTable"
+					 oncomplete="handleDialogSubmit(args, 'categoryDialog')" />
 </h:form>
 </p:dialog>
 
