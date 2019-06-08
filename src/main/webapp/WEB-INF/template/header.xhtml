@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+<ui:composition>
+	<div class="bg-dark header pl-5">
+		<h1 class="text-danger font-weight-bold font-italic">Davinci AO Webshop</h1>
+	</div>
+	<nav class="bg-dark navbar sticky-top navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<a class="text-danger ml-5 navbar-brand" href="index.xhtml">#{msg['pages.index.header']}</a>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="ml-5 navbar-nav mr-auto">
+				<li class="nav-item dropdown"><a
+					class="text-danger nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> #{msg['category.choose']} </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<c:forEach items="#{categoryBean.categories}" var="category">
+							<a class="dropdown-item" href="#">#{category.name}</a> 
+						</c:forEach>
+					</div></li>
+			</ul>
+			<h:panelGrid styleClass="form-inline my-2 my-lg-0">
+				<a href="shopping_cart.xhtml" class="btn btn-outline-danger my-2 my-sm-0">#{msg['shopping_cart']}</a>
+			</h:panelGrid>
+		</div>
+	</nav>
+</ui:composition>
+</html>

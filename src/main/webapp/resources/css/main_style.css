@@ -1,0 +1,17 @@
+/*
+ * Base structure
+ */
+ 
+/* Move down content because we have a fixed navbar that is 50px tall */
+.header{
+	background: #f8f9fa;
+	height:50px;
+}
+body{
+	min-height: 1000px;
+}
+ 
+/*
+ * Main content
+ */
+ 
