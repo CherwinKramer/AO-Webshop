@@ -7,7 +7,7 @@
 
 <!-- <p:messages id="messages" /> -->
 <p:growl id="messages" />
-<p:calendar disabledWeekends="true"></p:calendar>
+<h:outputText value="#{msg['locale']}" />
 <p:dataTable value="#{categoryBean.categories}" var="category" id="categoryTable">
 	<p:column headerText="name">
 		<h:outputText value="#{category.name}" />
