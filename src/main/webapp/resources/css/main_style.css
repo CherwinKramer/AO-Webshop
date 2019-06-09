@@ -10,6 +10,19 @@
 body{
 	min-height: 1000px;
 }
+ul li a span{
+	color: #dc3545  !important;
+}
+
+.menu-button{
+	background-color: transparent !important;
+	color: #dc3545  !important;
+	border: 1px solid #dc3545 !important;
+}
+.menu-button:hover{
+	background-color: #dc3545 !important;
+	color: white !important;
+}
  
 /*
  * Main content

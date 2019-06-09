@@ -9,6 +9,11 @@
 	<name>ao-webshop Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
+	<properties>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		<spring.version>5.1.5.RELEASE</spring.version>
+	</properties>
+
 	<build>
 		<finalName>ao-webshop</finalName>
 		<plugins>
@@ -48,16 +53,25 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>1.7.1.RELEASE</version>
 		</dependency>
+		<!-- Spring Security Core -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
+
+		<!-- Spring Security Config -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>5.1.5.RELEASE</version>
-			<scope>runtime</scope>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Spring Security Web -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- Hibernate and mysql -->
@@ -118,7 +132,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.1</version>
+			<version>7.0</version>
 		</dependency>
 
 		<!-- Javax servlet -->
@@ -148,7 +162,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>4.1.4.RELEASE</version>
+				<version>5.1.7.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
