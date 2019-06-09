@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+
+	<ui:composition template="/WEB-INF/template/main.xhtml">
+		<ui:define name="page_title">#{msg['pages.login.title']}</ui:define>
+		<ui:define name="content">
+			<h:outputText value="#{msg['locale']}" />
+			<p:fieldset legend="#{msg['auth.login']}"
+				style="width: 400px; margin: 100px auto 0px auto;">
+				<h:messages />
+				<form name="f" action="${request.contextPath}/login" method="post">
+					<h:panelGrid columns="1">
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="#{msg['auth.username']}" />
+							<input type="text" id="username" name="username"  />
+							<h:outputText value="#{msg['auth.password']}" />
+							<input type="password" id="password" name="password" />
+						</h:panelGrid>
+						
+						<p:commandButton type="submit" styleClass="menu-button-orange" value="#{msg['auth.login']}" />
+						<p:link value="#{msg['auth.no_account']}" href="register.xhtml" />
+					</h:panelGrid>
+				</form>
+			</p:fieldset>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

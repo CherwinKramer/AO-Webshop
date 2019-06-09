@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+
+	<ui:composition template="/WEB-INF/template/main.xhtml">
+		<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
+		<ui:define name="content">
+			<h:outputText value="#{msg['locale']}" />
+			<p:fieldset legend="#{msg['auth.register']}"
+				style="width: 400px; margin: 0 auto;">
+				<h:form>
+					<h:panelGrid>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="#{msg['auth.username']}*" />
+							<p:inputText required="true"
+								value="#{authenticationBean.registerUser.username}" />
+							<h:outputText value="#{msg['auth.password']}*" />
+							<p:inputText required="true"
+								value="#{authenticationBean.registerUser.password}" />
+							<h:outputText value="#{msg['auth.email']}*" />
+							<p:inputText required="true"
+								value="#{authenticationBean.registerUser.email}" />
+							<h:outputText value="#{msg['auth.mobile']}" />
+							<p:inputText value="#{authenticationBean.registerUser.phone}" />
+							<h:outputText value="#{msg['auth.roles']}" />
+							<h:selectManyListbox id="multiple" 
+								value="#{authenticationBean.registerUser.roles}"  multiple="true">
+								<f:selectItems value="#{authenticationBean.rolesSelectList}" />
+							</h:selectManyListbox>
+						</h:panelGrid>
+						<h:outputText style="padding-left:5px" value="#{msg['fields.required']}" />
+
+						<p:commandButton style="margin-left:5px" styleClass="menu-button-orange"
+							value="#{msg['auth.register']}" />
+					</h:panelGrid>
+				</h:form>
+			</p:fieldset>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
