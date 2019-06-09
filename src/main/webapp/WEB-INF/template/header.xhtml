@@ -10,11 +10,11 @@
 		<h1 class="text-danger font-weight-bold font-italic">Davinci AO
 			Webshop</h1>
 	</div>
-	<h:form>
+	<h:form id="menubar">
 		<p:menubar styleClass="bg-dark"
 			style="-moz-border-radius: 0px !important; -webkit-border-radius: 0px !important; border-radius: 0px !important; border: none !important;">
 			<p:menuitem value="#{msg['pages.index.header']}" icon="pi pi-home"
-					style="margin-right: 30px;" outcome="index.xhtml"/>
+				style="margin-right: 30px;" outcome="index.xhtml" />
 			<!-- 		<p:menuitem value="#{msg['pages.index.header']}" url="http://www.primefaces.org" icon="pi pi-home" styleClass="menu-item" />
  -->
 			<p:submenu style="margin-left: 40px;"
@@ -25,12 +25,12 @@
 			</p:submenu>
 
 			<f:facet name="options">
-				<p:button type="button" value="#{msg['auth.login']}" href="login.xhtml"
-					icon="pi pi-sign-in" styleClass="menu-button"
-					style="margin-right: 30px;"/>
-				<p:button type="button" href="shopping_cart.xhtml" value="#{msg['shopping_cart']}"
-					icon="pi pi-shopping-cart" styleClass="menu-button"
-					style="margin-right:20px;" />
+				<p:button type="button" value="#{msg['auth.login']}"
+					href="login.xhtml" icon="pi pi-sign-in" styleClass="menu-button-orange"
+					style="margin-right: 30px;" />
+				<p:button type="button" href="shopping_cart.xhtml"
+					value="#{msg['shopping_cart']}" icon="pi pi-shopping-cart"
+					styleClass="menu-button-red" style="margin-right:20px;" />
 			</f:facet>
 		</p:menubar>
 	</h:form>

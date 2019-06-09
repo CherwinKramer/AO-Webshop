@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.apache.myfaces.config.annotation.LifecycleProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
@@ -18,7 +19,7 @@ import nl.ckramer.webshop.service.CategoryService;
 
 @Getter @Setter
 @Named
-@ViewScoped
+@SessionScoped
 public class CategoryBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
