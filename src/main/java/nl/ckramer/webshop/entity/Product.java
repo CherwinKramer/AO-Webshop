@@ -1,39 +1,42 @@
 package nl.ckramer.webshop.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter @Setter
-//@Table(name = "auth_roles")
-public class AuthRole implements Serializable{
-
+@Entity
+//@Table(name = "product")
+public class Product implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	public final static String ADMIN = "ADMIN";
-	public final static String USER = "USER";
-
 	@Id
-	@Column(name = "ROLE_ID")
+	@Column(name = "PRODUCT_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
-	@Column(name = "ROLE_NAME")
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CATEGORY_ID")
+	private Category category;
+	
+	@Column(name = "NAME")
 	private String name;
 	
-	@ManyToMany(mappedBy = "roles")
-	private List<AuthUser> users = new ArrayList<>();
+	@Column(name = "DESCRIPTION")
+	private String description;
+	
+	@Column(name = "PRICE")
+	private Double price;
 	
 	@Override
 	public String toString() {

@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-@Table(name = "auth_users")
+//@Table(name = "auth_users")
 public class AuthUser {
 
 	@Id
@@ -39,10 +39,10 @@ public class AuthUser {
 	private String phone;
 
 	@ManyToMany
-	@JoinTable(name = "auth_users_auth_roles", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID"),
+	@JoinTable(name = "Auth_users_Auth_roles", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID"),
 	inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID"))
 	private List<AuthRole> roles = new ArrayList<>();
 
 	@Column(name = "ENABLED")
-	private Boolean enabled;
+	private Boolean enabled = true;
 }

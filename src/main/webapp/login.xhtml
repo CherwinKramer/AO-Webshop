@@ -3,32 +3,60 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <h:head>
 </h:head>
 <h:body>
-
 	<ui:composition template="/WEB-INF/template/main.xhtml">
 		<ui:define name="page_title">#{msg['pages.login.title']}</ui:define>
 		<ui:define name="content">
-			<h:outputText value="#{msg['locale']}" />
-			<p:fieldset legend="#{msg['auth.login']}"
-				style="width: 400px; margin: 100px auto 0px auto;">
-				<h:messages />
-				<form name="f" action="${request.contextPath}/login" method="post">
-					<h:panelGrid columns="1">
-						<h:panelGrid columns="2" cellpadding="5">
-							<h:outputText value="#{msg['auth.username']}" />
-							<input type="text" id="username" name="username"  />
-							<h:outputText value="#{msg['auth.password']}" />
-							<input type="password" id="password" name="password" />
+
+			<c:if test="${not empty param.login_error}">
+				<div class="error">
+					Your login attempt was not successful, try again.<br /> Reason:
+					#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+				</div>
+			</c:if>
+
+			<!-- 			<h:form prependId="false">
+				<p:fieldset legend="#{msg['auth.login']}"
+					style="width: 400px; margin: 100px auto 0px auto;">
+					<h:messages />
+					<form name="f" action="j_spring_security_check" method="post">
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputText value="#{msg['auth.username']}" />
+								<input type="text" id="username" name="j_username" />
+								<h:outputText value="#{msg['auth.password']}" />
+								<input type="password" id="password" name="j_password" />
+							</h:panelGrid>
+
+							<input type="submit" class="menu-button-orange"
+								value="#{msg['auth.login']}" />
 						</h:panelGrid>
-						
-						<p:commandButton type="submit" styleClass="menu-button-orange" value="#{msg['auth.login']}" />
-						<p:link value="#{msg['auth.no_account']}" href="register.xhtml" />
-					</h:panelGrid>
-				</form>
-			</p:fieldset>
+					</form>
+
+					<p:link value="#{msg['auth.no_account']}"
+						href="${pageContext.request.contextPath}register.xhtml" />
+				</p:fieldset>
+			</h:form> -->
+
+			<h:form prependId="false">
+
+				<p:panelGrid columns="1" styleClass="ui-fluid center ui-noborder">
+					<h2>Please login</h2>
+
+					<p:outputLabel value="Login failed!" styleClass="red"
+						rendered="${!empty param['error']}" />
+
+					<p:inputText id="username" placeholder="User name" />
+					<p:password id="password" placeholder="Password" />
+
+					<p:commandButton value="Login" ajax="false" />
+				</p:panelGrid>
+
+			</h:form>
 		</ui:define>
 	</ui:composition>
 

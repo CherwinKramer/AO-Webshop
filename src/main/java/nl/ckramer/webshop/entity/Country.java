@@ -1,33 +1,32 @@
 package nl.ckramer.webshop.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 @Entity
-//@Table(name = "category")
-public class Category implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
+//@Table(name = "country")
+public class Country {
 
 	@Id
-	@Column(name = "CATEGORY_ID")
+	@Column(name = "COUNTRY_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name = "CATEGORY_NAME")
+	@Column(name = "NAME")
 	private String name;
+	
+	@Column(name = "CODE")
+	private String code;
+	
+	@Column(name = "CODE_SHORT")
+	private String codeShort;
 
-	@Override
-	public String toString() {
-		return name;
-	}
 }

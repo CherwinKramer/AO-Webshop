@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/WEB-INF/template/main.xhtml">
+		<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
+		<ui:define name="content">
+
+<!-- <p:messages id="messages" /> -->
+<p:growl id="messages" />
+
+<p:dataTable value="#{productBean.products}" var="product" id="productTable" paginator="true" paginatorPosition="bottom">
+	<p:column headerText="#{msg['category.name']}">
+		<h:outputText value="#{product.category.name}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['common.field.name']}">
+		<h:outputText value="#{product.name}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['common.field.description']}">
+		<h:outputText value="#{product.description}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['product.price']}">
+		<h:outputText value="#{product.price}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['common.actions']}" width="150">
+		<h:form>
+			<p:commandButton value="edit" action="#{productBean.product(product)}" update=":productForm" resetValues="true" oncomplete="PF('productDialog').show()" />
+			<p:commandButton value="remove" action="#{productBean.remove(product)}" update=":productTable, :messages">
+				<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+			</p:commandButton>
+		</h:form>
+	</p:column>
+</p:dataTable>
+
+<br />
+<h:form>
+	<p:commandButton value="add product" action="#{productBean.clear()}" 
+					 update=":productForm" 
+					 oncomplete="PF('productDialog').show()"
+					 resetValues="true" />
+</h:form>
+
+<p:dialog widgetVar="productDialog" closeOnEscape="true" modal="true" header="#{msg['management.products']}">
+<h:form id="productForm">
+	<p:messages />
+	<p:focus />
+	<p:panelGrid columns="2">
+		<p:outputLabel value="Category:" />
+		<p:selectOneMenu required="true" value="#{productBean.product.category}">
+			<f:selectItems value="#{sessionBean.categories}"/>
+		</p:selectOneMenu>
+		
+		<p:outputLabel value="Name:" />
+		<p:inputText required="true" value="#{productBean.product.name}" />
+		<p:outputLabel value="Description:" />
+		<p:inputText required="true" value="#{productBean.product.description}" />
+		<p:outputLabel value="Price:" />
+		<p:inputText required="true" value="#{productBean.product.price}" />
+	</p:panelGrid>
+	<p:commandButton value="save" action="#{productBean.save()}"
+					 update="productForm, :productTable"
+					 oncomplete="handleDialogSubmit(args, 'productDialog')" />
+</h:form>
+</p:dialog>
+
+<h:form>
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+</h:form>
+
+
+<script type="text/javascript">
+    function handleDialogSubmit(args, dialogName) {
+        if (!args.validationFailed) {
+            PF(dialogName).hide();
+        }
+    }
+</script>
+
+</ui:define>
+</ui:composition>
+</html>

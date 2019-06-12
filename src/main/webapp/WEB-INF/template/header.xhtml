@@ -6,29 +6,37 @@
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 <ui:composition>
-	<div class="bg-dark header pl-5">
-		<h1 class="text-danger font-weight-bold font-italic">Davinci AO
-			Webshop</h1>
+	<div class="navbar-header">
+		<p class="navbar-header-text">Davinci AO Webshop</p>
 	</div>
-	<h:form id="menubar">
-		<p:menubar styleClass="bg-dark"
-			style="-moz-border-radius: 0px !important; -webkit-border-radius: 0px !important; border-radius: 0px !important; border: none !important;">
+	<h:form>
+		<p:menubar>
 			<p:menuitem value="#{msg['pages.index.header']}" icon="pi pi-home"
-				style="margin-right: 30px;" outcome="index.xhtml" />
+				 outcome="${pageContext.request.contextPath}/index.xhtml" />
 			<!-- 		<p:menuitem value="#{msg['pages.index.header']}" url="http://www.primefaces.org" icon="pi pi-home" styleClass="menu-item" />
  -->
-			<p:submenu style="margin-left: 40px;"
-				label="#{msg['category.choose']}">
-				<c:forEach items="#{categoryBean.categories}" var="category">
-					<p:menuitem value="#{category.name}" url="#" />
+			<p:submenu label="#{msg['category.choose']}">
+				<c:forEach items="#{sessionBean.categories}" var="category">
+					<p:menuitem value="#{category.name}" actionListener="#{productBean.category(category)}" outcome="${pageContext.request.contextPath}product.xhtml" />
 				</c:forEach>
+			</p:submenu>
+
+			<p:submenu label="#{msg['management']}">
+				<p:submenu label="#{msg['management.users_roles']}">
+					<p:menuitem value="#{msg['management.users']}" outcome="${pageContext.request.contextPath}/pages/management/user.xhtml" />
+					<p:menuitem value="#{msg['management.roles']}" outcome="${pageContext.request.contextPath}/pages/management/role.xhtml" />
+				</p:submenu>
+				<p:submenu label="#{msg['management.prd_ctgy']}">
+					<p:menuitem value="#{msg['management.products']}" outcome="${pageContext.request.contextPath}/pages/management/product.xhtml" />
+					<p:menuitem value="#{msg['management.categories']}" outcome="${pageContext.request.contextPath}/pages/management/category.xhtml" />
+				</p:submenu>
 			</p:submenu>
 
 			<f:facet name="options">
 				<p:button type="button" value="#{msg['auth.login']}"
-					href="login.xhtml" icon="pi pi-sign-in" styleClass="menu-button-orange"
-					style="margin-right: 30px;" />
-				<p:button type="button" href="shopping_cart.xhtml"
+					outcome="${pageContext.request.contextPath}/login.xhtml" icon="pi pi-sign-in"
+					styleClass="menu-button-orange" style="margin-right: 30px;" />
+				<p:button type="button" outcome="${pageContext.request.contextPath}/shopping_cart.xhtml"
 					value="#{msg['shopping_cart']}" icon="pi pi-shopping-cart"
 					styleClass="menu-button-red" style="margin-right:20px;" />
 			</f:facet>

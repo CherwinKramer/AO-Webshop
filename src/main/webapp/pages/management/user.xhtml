@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/WEB-INF/template/main.xhtml">
+		<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
+		<ui:define name="content">
+
+<!-- <p:messages id="messages" /> -->
+<p:growl id="messages" />
+
+<p:dataTable value="#{authUserBean.users}" var="user" id="userTable">
+	<p:column headerText="#{msg['auth.username']}">
+		<h:outputText value="#{user.username}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['auth.email']}">
+		<h:outputText value="#{user.email}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['auth.phone']}">
+		<h:outputText value="#{user.phone}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['common.actions']}">
+		<h:form>
+			<p:commandButton value="edit" action="#{authUserBean.user(user)}" update=":userForm" resetValues="true" oncomplete="PF('userDialog').show()" />
+			<p:commandButton value="remove" action="#{authUserBean.remove(user)}" update=":userTable, :messages">
+				<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+			</p:commandButton>
+		</h:form>
+	</p:column>
+</p:dataTable>
+
+<br />
+<h:form>
+	<p:commandButton value="add user" action="#{authUserBean.clear()}" 
+					 update=":userForm" 
+					 oncomplete="PF('userDialog').show()"
+					 resetValues="true" />
+</h:form>
+
+<p:dialog widgetVar="userDialog" closeOnEscape="true" modal="true" header="#{msg['management.users']}">
+<h:form id="userForm">
+	<p:messages />
+	<p:focus />
+	<p:panelGrid columns="2">
+		<p:outputLabel value="Name:" />
+		<p:inputText required="true" value="#{authUserBean.user.username}" />
+		<p:outputLabel value="Password:" />
+		<p:inputText type="password" required="true" value="#{authUserBean.user.password}" />
+		<p:outputLabel value="Email:" />
+		<p:inputText required="true" value="#{authUserBean.user.email}" />
+		<p:outputLabel value="Phone:" />
+		<p:inputText required="true" value="#{authUserBean.user.phone}" />
+		<p:outputLabel value="Enabled:" />
+		<p:selectBooleanButton value="#{authUserBean.user.enabled}" onLabel="#{msg['common.yes']}" offLabel="#{msg['common.no']}" onIcon="pi pi-check" offIcon="pi pi-times" style="width:60px"/>
+	</p:panelGrid>
+	<p:commandButton value="save" action="#{authUserBean.save()}" 
+					 update="userForm, :userTable"
+					 oncomplete="handleDialogSubmit(args, 'userDialog')" />
+</h:form>
+</p:dialog>
+
+<h:form>
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+</h:form>
+
+
+<script type="text/javascript">
+    function handleDialogSubmit(args, dialogName) {
+        if (!args.validationFailed) {
+            PF(dialogName).hide();
+        }
+    }
+</script>
+
+</ui:define>
+</ui:composition>
+</html>

@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -16,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +25,9 @@ import nl.ckramer.webshop.dao.AuthUserDao;
 import nl.ckramer.webshop.entity.AuthRole;
 import nl.ckramer.webshop.entity.AuthUser;
 
-@Component
+@Named("authenticationBean")
 @Getter @Setter
-@Scope("request")
+@ViewScoped
 public class AuthenticationBean implements Serializable, AuthenticationManager {
 
 	private static final long serialVersionUID = 1L;
@@ -38,6 +38,7 @@ public class AuthenticationBean implements Serializable, AuthenticationManager {
 	@Autowired
 	AuthRoleDao authRoleDao;
 
+	AuthUser user;
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	private AuthUser registerUser = new AuthUser();
@@ -46,6 +47,11 @@ public class AuthenticationBean implements Serializable, AuthenticationManager {
 	@PostConstruct
 	public void initialize() {
 		rolesSelectList = authRoleDao.findAll();
+		user = authUserDao.findByUsername("cherwin");
+	}
+	
+	public void registerAccount() {
+		authUserDao.save(registerUser);
 	}
 
 	@Override
@@ -65,7 +71,7 @@ public class AuthenticationBean implements Serializable, AuthenticationManager {
 		List<AuthRole> authRoles = user.getRoles();
 		
 		return new UsernamePasswordAuthenticationToken(username, password,
-				authRoles.stream().map(x -> new SimpleGrantedAuthority(x.getRole())).collect(Collectors.toList()));
+				authRoles.stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList()));
 	}
 
 }

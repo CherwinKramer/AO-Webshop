@@ -8,22 +8,30 @@
 <!-- <p:messages id="messages" /> -->
 <p:growl id="messages" />
 
-<p:dataTable value="#{categoryBean.categories}" var="category" id="categoryTable">
+<p:dataTable value="#{productBean.products}" var="product" id="categoryTable">
 	<p:column headerText="name">
-		<h:outputText value="#{category.name}" />
+		<h:outputText value="#{product.name}" />
 	</p:column>
 	
-	<p:column headerText="operations">
+	<p:column headerText="name">
+		<h:outputText value="#{product.description}" />
+	</p:column>
+	
+	<p:column headerText="name">
+		<h:outputText value="#{product.price}" />
+	</p:column>
+	
+	<!-- <p:column headerText="operations">
 		<h:form>
 			<p:commandButton value="edit" action="#{categoryBean.setCategory(category)}" update=":categoryForm" resetValues="true" oncomplete="PF('categoryDialog').show()" />
 			<p:commandButton value="remove" action="#{categoryBean.remove(category)}" update=":categoryTable, :messages">
 				<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
 			</p:commandButton>
 		</h:form>
-	</p:column>
+	</p:column> -->
 </p:dataTable>
 
-<br />
+<!-- <br />
 <h:form>
 	<p:commandButton value="add category" action="#{categoryBean.clear()}" 
 					 update=":categoryForm" 
@@ -50,16 +58,16 @@
         <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
     </p:confirmDialog>
-</h:form>
+</h:form> -->
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     function handleDialogSubmit(args, dialogName) {
         if (!args.validationFailed) {
             PF(dialogName).hide();
         }
     }
-</script>
+</script> -->
 
 
 </h:body>
