@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:messages id="messages" for="country-form" />
+	<h:panelGrid id="grid" styleClass="form">
+
+		<h:panelGrid columns="3">
+			<p:outputLabel for="name" value="#{msg['country.name']}" />
+			<p:inputText id="name" required="true" value="#{countryBean.country.name}" />
+			<p:message for="name" display="icon" />
+			
+			<p:outputLabel for="codeShort" value="#{msg['country.codeShort']}" />
+			<p:inputText id="codeShort" required="true" value="#{countryBean.country.codeShort}" />
+			<p:message for="codeShort" display="icon" />
+			
+			<p:outputLabel for="code" value="#{msg['country.code']}" />
+			<p:inputText id="code" required="true" value="#{countryBean.country.code}" />
+			<p:message for="code" display="icon" />
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+	<f:facet name="footer">
+		<h:panelGroup layout="block">
+			<p:commandButton id="save-action" value="#{msg['common.save']}" icon="fa fa-lg fa-save"
+				actionListener="#{countryBean.save}" update="country grid" oncomplete="if(!args.validationFailed){PF('country-dialog').hide();}"/>
+
+			<p:commandButton id="cancel-action" value="#{msg['common.cancel']}" oncomplete="PF('country-dialog').hide();">
+
+				<p:resetInput target="@form" />
+			</p:commandButton>
+		</h:panelGroup>
+	</f:facet>
+
+</ui:composition>

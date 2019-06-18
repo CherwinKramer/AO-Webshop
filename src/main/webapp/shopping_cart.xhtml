@@ -4,12 +4,67 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-
 	<ui:composition template="/WEB-INF/template/main.xhtml">
 		<ui:define name="page_title">#{msg['pages.cart.title']}</ui:define>
 		<ui:define name="content">
-			<h:outputText value="#{msg['locale']}" />
+			<h:outputText rendered="#{sessionBean.init()}" />
+			<h:form id="shopping_cart">
+				<p:dataTable value="#{sessionBean.purchaseOrderDetails}" var="purchaseOrderDetail"
+				id="productTable">
+					<p:column headerText="#{msg['product.name']}">
+						<h:outputText value="#{purchaseOrderDetail.product.name}" />
+					</p:column>
+	
+					<p:column headerText="#{msg['product.description']}">
+						<h:outputText value="#{purchaseOrderDetail.product.description}" />
+					</p:column>
+	
+					<p:column headerText="#{msg['product.price']}">
+						<h:outputText value="#{purchaseOrderDetail.product.price}" />
+					</p:column>
+					
+					<p:column headerText="#{msg['shopping-cart.quantity']}">
+						<p:spinner  min="0" decimalPlaces="0" value="#{purchaseOrderDetail.quantity}">
+							<f:ajax event="change" render="productTable totalCosts" listener="#{sessionBean.onValueChangeListener(purchaseOrderDetail)}"/>
+						</p:spinner>
+					</p:column>
+	
+					<p:column headerText="#{msg['common.actions']}" styleClass="actions">
+						<p:commandButton update="shopping_cart" actionListener="#{sessionBean.deletePurchaseOrderDetail(purchaseOrderDetail)}"
+						 title="#{msg['shopping-cart.add']}" icon="pi pi-trash" styleClass="icon" style="font-size: 1,5em">
+						 	<p:confirm header="#{msg['delete.header']}" message="#{msg['delete.confirm']}" icon="ui-icon-alert" />
+						 </p:commandButton>
+					</p:column>
+					
+					<f:facet name="footer">
+						<h:outputText value="#{msg['order.cost']} " />
+						<p:inputNumber id="totalCosts"  disabled="true" value="#{sessionBean.totalCosts}" />
+					</f:facet>
+				</p:dataTable>
+				<br />
+				<p:commandButton disabled="#{empty sessionBean.purchaseOrderDetails}" value="#{msg['shopping-cart.finalize']}" oncomplete="PF('order-dialog').show()"
+				styleClass="menu-button-red" style="font-size: 1,5em" />
+				
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="#{msg['common.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="#{msg['common.no']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+			
+			<h:form id="order-form">
+				<p:dialog id="order-dialog" widgetVar="order-dialog" resizable="false"
+					header="#{msg['order.form']}" modal="true" autoCentre="true" draggable="false" >
+					<p:ajax event="close" oncomplete="PF('order-dialog').hide()" />
+					<h:panelGrid columns="1">
+						<h:outputText value="#{msg['order.select-location']}" />
+						<p:selectOneMenu converter="selectItemConverter" value="#{sessionBean.purchaseOrder.location}">
+							<f:selectItems value="#{sessionBean.locations}" />
+						</p:selectOneMenu>
+						<p:commandButton value="#{msg['order.finalize']}" actionListener="#{sessionBean.finalizeOrder()}"/>
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			
 		</ui:define>
 	</ui:composition>
-
 </html>

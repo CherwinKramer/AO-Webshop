@@ -8,12 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 @Entity
-//@Table(name = "category")
 public class Category implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -27,7 +29,22 @@ public class Category implements Serializable{
 	private String name;
 
 	@Override
-	public String toString() {
-		return name;
-	}
+    public int hashCode() {
+          return new HashCodeBuilder()
+                 .append(getId())
+                 .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+          if (obj instanceof Category) {
+        	  Category other = (Category) obj;
+                 return new EqualsBuilder()
+                        .append(getId(), other.getId())
+                        .isEquals();
+          }
+          return false;
+    }
+
+	
 }

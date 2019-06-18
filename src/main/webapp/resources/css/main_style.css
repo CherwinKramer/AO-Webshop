@@ -100,6 +100,61 @@ body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text{
 	white-space: nowrap !important;
 	width: auto !important;
 }
+
+.column-30{
+	width: 30% !important;
+}
+.column-40{
+	width: 40% !important;
+}
+.column-50{
+	width: 50% !important;
+}
+.column-60{
+	width: 60% !important;
+}
+.column-70{
+	width: 70% !important;
+}
+
+.label{
+	font-weight: bold;
+}
+
+.text{
+	font-style: oblique;
+}
+
+.facetHeaderAccount td{
+	border: none !important;
+}
+
+.actions button{
+	background: transparent;
+	border: none !important;
+	color: #2d2d2d !important;
+}
+
+.actions button:hover{
+	background: #2d2d2d;
+	border: none !important;
+	color: white !important;
+}
+
+.ui-galleria{
+	width: 100%;
+	height: 100%;
+}
+
+ .ui-panel-images {
+    width: 100%;
+    height: 100%;
+}
+
+.ui-galleria-panel {
+    width: 100%;
+    height: 100%;
+}
 /*
  * Main content
  */

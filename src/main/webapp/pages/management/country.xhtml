@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/WEB-INF/template/main.xhtml">
+	<ui:define name="page_title">#{msg['pages.country.title']}</ui:define>
+	<ui:define name="content">
+		<h:form id="country">
+
+			<h:panelGroup>
+				<p:dataTable value="#{countryBean.countries}" var="country" id="countryTable" paginator="true" paginatorPosition="bottom">
+					
+					<p:column headerText="#{msg['country.name']}">
+						<h:outputText value="#{country.name}" />
+					</p:column>
+					
+					<p:column headerText="#{msg['country.codeShort']}">
+						<h:outputText value="#{country.codeShort}" />
+					</p:column>
+					
+					<p:column headerText="#{msg['country.code']}">
+						<h:outputText value="#{country.code}" />
+					</p:column>
+
+					<p:column headerText="#{msg['common.actions']}" styleClass="actions">
+						<p:commandButton value="#{msg['common.edit']}" action="#{countryBean.setCountry(country)}" resetValues="true"
+							oncomplete="PF('country-dialog').show()" update="country-form" />
+						<p:commandButton value="#{msg['common.delete']}" action="#{countryBean.remove(country)}" update="country" >
+							<p:confirm header="#{msg['delete.header']}" message="#{msg['delete.confirm']}" icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+					
+				</p:dataTable>
+			</h:panelGroup>
+
+			<p:commandButton value="#{msg['common.add']}" styleClass="menu-button-red"
+				actionListener="#{countryBean.add}" resetValues="true" update="country-form"
+				oncomplete="PF('country-dialog').show()" />
+
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{msg['common.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg['common.no']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+
+		<h:form id="country-form">
+			<p:dialog id="country-dialog" widgetVar="country-dialog" resizable="false"
+				header="#{msg['country.form']}" modal="true" autoCentre="true" draggable="false" >
+				<p:ajax event="close" oncomplete="PF('country-dialog').hide()" />
+				<ui:include src="forms/countryForm.xhtml" />
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

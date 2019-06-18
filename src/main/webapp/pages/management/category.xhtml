@@ -7,60 +7,45 @@
 <ui:composition template="/WEB-INF/template/main.xhtml">
 	<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
 	<ui:define name="content">
-
 		<h:form id="category">
-			<!-- <p:messages id="messages" /> -->
-			<p:growl id="messages" />
 
 			<h:panelGroup>
-				<p:dataTable value="#{categoryBean.categories}" var="category"
-					id="categoryTable" paginator="true" paginatorPosition="bottom">
+				<p:dataTable value="#{categoryBean.categories}" var="category" id="categoryTable" paginator="true" paginatorPosition="bottom">
+					
 					<p:column headerText="#{msg['category.name']}">
 						<h:outputText value="#{category.name}" />
 					</p:column>
 
-					<p:column headerText="#{msg['common.actions']}"
-						styleClass="actions">
-						<p:commandButton value="edit"
-							action="#{categoryBean.category(category)}" resetValues="true"
-							oncomplete="PF('categoryForm:categoryDialog').show()" />
-						<p:commandButton value="remove" oncomplete="PF('confirmationDialog').show()" update="category:confirmationDialog">
-							<p:confirm header="Confirmation" message="Are you sure?"
-								icon="ui-icon-alert" />
+					<p:column headerText="#{msg['common.actions']}" styleClass="actions">
+						<p:commandButton value="#{msg['common.edit']}" action="#{categoryBean.setCategory(category)}" resetValues="true"
+							oncomplete="PF('category-dialog').show()" update="category-form" />
+						<p:commandButton value="#{msg['common.delete']}" action="#{categoryBean.remove(category)}" update="category" >
+							<p:confirm header="#{msg['delete.header']}" message="#{msg['delete.confirm']}" icon="ui-icon-alert" />
 						</p:commandButton>
 					</p:column>
+					
 				</p:dataTable>
 			</h:panelGroup>
-			<br />
-			<p:commandButton value="add category" styleClass="menu-button-red"
-				action="#{categoryBean.clear()}" resetValues="true"
-				oncomplete="PF(':categoryForm:categoryDialog').show()" />
-		
-			<p:confirmDialog id="confirmationDialog" widgetVar="confirmationDialog" header="#{common.delete.confirm}" closeOnEscape="true">
-				<p:commandButton value="#{msg['common.yes']}" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-				<p:commandButton value="#{msg['common.no']}" type="button"
-					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+			<p:commandButton value="#{msg['common.add']}" styleClass="menu-button-red"
+				actionListener="#{categoryBean.add}" resetValues="true" update="category-form"
+				oncomplete="PF('category-dialog').show()" />
+
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{msg['common.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg['common.no']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
 			</p:confirmDialog>
 		</h:form>
 
-		<!-- <h:form id="categoryForm">
-			<p:dialog widgetVar="categoryDialog" closeOnEscape="true"
-				modal="true" header="#{msg['management.categories']}">
+		<h:form id="category-form">
+			<p:dialog id="category-dialog" widgetVar="category-dialog" resizable="false"
+				header="#{msg['category.form']}" modal="true" autoCentre="true" draggable="false" >
+				<p:ajax event="close" oncomplete="PF('category-dialog').hide()" />
 				<ui:include src="forms/categoryForm.xhtml" />
 			</p:dialog>
-		</h:form> -->
+		</h:form>
 
-
-
-
-		<script type="text/javascript">
-			function handleDialogSubmit(args, dialogName) {
-				if (!args.validationFailed) {
-					PF(dialogName).hide();
-				}
-			}
-		</script>
 	</ui:define>
 </ui:composition>
 </html>

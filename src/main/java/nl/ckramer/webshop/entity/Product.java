@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,12 +38,24 @@ public class Product implements Serializable{
 	@Column(name = "DESCRIPTION")
 	private String description;
 	
-	@Column(name = "PRICE")
+	@Column(name = "PRICE", scale = 2)
 	private Double price;
 	
 	@Override
-	public String toString() {
-		return name;
-	}
+    public int hashCode() {
+          return new HashCodeBuilder()
+                 .append(getId())
+                 .toHashCode();
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+          if (obj instanceof Product) {
+        	  Product other = (Product) obj;
+                 return new EqualsBuilder()
+                        .append(getId(), other.getId())
+                        .isEquals();
+          }
+          return false;
+    }	
 }

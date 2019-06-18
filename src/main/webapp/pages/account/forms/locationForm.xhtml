@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:messages id="messages" for="location-form" />
+	<h:panelGrid id="grid" styleClass="form">
+
+		<h:panelGrid columns="3">
+			<p:outputLabel for="name" value="#{msg['location.name']}" />
+			<p:inputText id="name" required="true" value="#{accountBean.location.name}" />
+			<p:message for="name" display="icon" />
+			
+			<p:outputLabel for="addressLine1" value="#{msg['location.addressLine1']}" />
+			<p:inputText id="addressLine1" required="true" value="#{accountBean.location.addressLine1}" />
+			<p:message for="addressLine1" display="icon" />
+			
+			<p:outputLabel for="addressLine2" value="#{msg['location.addressLine2']}" />
+			<p:inputText id="addressLine2" required="false" value="#{accountBean.location.addressLine2}" />
+			<p:message for="addressLine2" display="icon" />
+			
+			<p:outputLabel for="postalCode" value="#{msg['location.postalCode']}" />
+			<p:inputText id="postalCode" required="true" value="#{accountBean.location.postalCode}" />
+			<p:message for="postalCode" display="icon" />
+			
+			<p:outputLabel for="place" value="#{msg['location.place']}" />
+			<p:inputText id="place" required="true" value="#{accountBean.location.place}" />
+			<p:message for="place" display="icon" />
+			
+			 <p:outputLabel for="country" value="#{msg['location.country']}" />
+			<p:selectOneMenu id="country" value="#{accountBean.location.country}" required="true" converter="selectItemConverter">
+				<f:selectItems value="#{accountBean.countries}" />
+			</p:selectOneMenu>
+			<p:message for="country" display="icon" /> 
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+	<f:facet name="footer">
+		<h:panelGroup layout="block">
+			<p:commandButton id="save-action" value="#{msg['common.save']}" icon="fa fa-lg fa-save"
+				actionListener="#{accountBean.saveLocation}" update="account grid" oncomplete="if(!args.validationFailed){PF('location-dialog').hide();}"/>
+
+			<p:commandButton id="cancel-action" value="#{msg['common.cancel']}" oncomplete="PF('location-dialog').hide();">
+
+				<p:resetInput target="@form" />
+			</p:commandButton>
+		</h:panelGroup>
+	</f:facet>
+
+</ui:composition>

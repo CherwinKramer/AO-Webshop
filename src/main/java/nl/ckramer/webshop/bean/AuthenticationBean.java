@@ -1,21 +1,15 @@
 package nl.ckramer.webshop.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Named;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.Getter;
@@ -24,11 +18,12 @@ import nl.ckramer.webshop.dao.AuthRoleDao;
 import nl.ckramer.webshop.dao.AuthUserDao;
 import nl.ckramer.webshop.entity.AuthRole;
 import nl.ckramer.webshop.entity.AuthUser;
+import nl.ckramer.webshop.util.AutowireHelper;
 
-@Named("authenticationBean")
+@ManagedBean(name = "authenticationBean")
 @Getter @Setter
 @ViewScoped
-public class AuthenticationBean implements Serializable, AuthenticationManager {
+public class AuthenticationBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,41 +32,38 @@ public class AuthenticationBean implements Serializable, AuthenticationManager {
 
 	@Autowired
 	AuthRoleDao authRoleDao;
+	
+	
 
-	AuthUser user;
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	private AuthUser registerUser = new AuthUser();
-	private List<AuthRole> rolesSelectList;
+	private String chosenRole = null;
+	
+	private AuthUser authUser;
 	
 	@PostConstruct
 	public void initialize() {
-		rolesSelectList = authRoleDao.findAll();
-		user = authUserDao.findByUsername("cherwin");
+		AutowireHelper.autowire(this);
 	}
 	
-	public void registerAccount() {
-		authUserDao.save(registerUser);
+	@Autowired
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	    return new BCryptPasswordEncoder();
 	}
-
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String username = authentication.getPrincipal() + "";
-		String password = authentication.getCredentials() + "";
-		AuthUser user = authUserDao.findByUsername(username);
-		if (user == null) {
-			throw new BadCredentialsException("1000");
-		}
-		if (!user.getEnabled()) {
-			throw new DisabledException("1001");
-		}
-		if (!encoder.matches(password, user.getPassword())) {
-			throw new BadCredentialsException("1000");
-		}
-		List<AuthRole> authRoles = user.getRoles();
+	
+	public void registerAccount() throws IOException {
+		AuthRole authRole = new AuthRole();
+		authRole.setRole(chosenRole);
+		authRole.setUsername(registerUser.getUsername());
+		authRole = authRoleDao.save(authRole);
 		
-		return new UsernamePasswordAuthenticationToken(username, password,
-				authRoles.stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList()));
+		registerUser.setPassword(bCryptPasswordEncoder().encode(registerUser.getPassword()));
+		registerUser.setRole(authRole);
+		authUserDao.save(registerUser);
+		
+	    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	    externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml");
 	}
 
 }

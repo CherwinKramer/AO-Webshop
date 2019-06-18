@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<ui:composition template="/WEB-INF/template/main.xhtml">
+	<ui:define name="page_title">#{msg['pages.orders.title']}</ui:define>
+	<ui:define name="content">
+		<h:form id="account">
+
+			<h:panelGroup>
+				<p:dataTable value="#{orderBean.purchaseOrders}" var="order" id="orderTable" paginator="true" paginatorPosition="bottom">
+					<p:column style="width:16px">
+            			<p:rowToggler />
+        			</p:column>
+					
+					<p:column headerText="#{msg['order.id']}">
+						<h:outputText value="#{order.id}" />
+					</p:column>
+					
+					<sec:authorize access="hasAuthority('ADMIN')">
+						<p:column headerText="#{msg['auth.username']}">
+							<h:outputText value="#{order.authUser.username}" />
+						</p:column>
+					</sec:authorize>
+
+					<p:column headerText="#{msg['location.address']}">
+						<h:outputText value="#{order.location.addressLine1}, #{order.location.postalCode}, #{order.location.place}, #{order.location.country.name}" />
+					</p:column>
+
+					<p:column headerText="#{msg['order.processed']}">
+						<h:outputText value="#{order.processed}" />
+					</p:column>
+
+					<sec:authorize access="hasAuthority('ADMIN')">
+						<p:column headerText="#{msg['common.actions']}" styleClass="actions">
+							<p:commandButton value="#{msg['order.finalize']}" rendered="#{!order.processed}"
+								actionListener="#{orderBean.finalizeOrder(order)}" update="orderTable">
+								<p:confirm header="#{msg['order.process.header']}"
+									message="#{msg['order.process']}" icon="ui-icon-alert" />
+							</p:commandButton>
+						</p:column>
+					</sec:authorize>
+					
+					<p:rowExpansion>
+						<p:dataTable value="#{order.purchaseOrderDetails}" var="detail" id="detailTable" paginator="true" paginatorPosition="bottom">
+							
+							<p:column headerText="#{msg['order-detail.id']}">
+								<h:outputText value="#{detail.id}" />
+							</p:column>
+							
+							<p:column headerText="#{msg['product.name']}">
+								<h:outputText value="#{detail.product.name}" />
+							</p:column>
+							
+							<p:column headerText="#{msg['product.description']}">
+								<h:outputText value="#{detail.product.description}" />
+							</p:column>
+							
+							<p:column headerText="#{msg['product.price']}">
+								<h:outputText value="#{detail.product.price}" />
+							</p:column>
+							
+							<p:column headerText="#{msg['shopping-cart.quantity']}">
+								<h:outputText value="#{detail.quantity}" />
+							</p:column>
+						
+						</p:dataTable>
+					</p:rowExpansion>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		
+		<p:confirmDialog global="true" closeOnEscape="true">
+	        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	</p:confirmDialog>
+		
+	</ui:define>
+</ui:composition>
+</html>

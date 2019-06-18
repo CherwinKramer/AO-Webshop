@@ -12,37 +12,32 @@
 		<ui:define name="page_title">#{msg['pages.login.title']}</ui:define>
 		<ui:define name="content">
 
-			<c:if test="${not empty param.login_error}">
-				<div class="error">
-					Your login attempt was not successful, try again.<br /> Reason:
-					#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
-				</div>
-			</c:if>
-
-			<!-- 			<h:form prependId="false">
+			<h:form prependId="false">
 				<p:fieldset legend="#{msg['auth.login']}"
 					style="width: 400px; margin: 100px auto 0px auto;">
-					<h:messages />
-					<form name="f" action="j_spring_security_check" method="post">
+					<form name="f" method="post">
 						<h:panelGrid columns="1">
+							<p:outputLabel value="#{msg['auth.login.failed']}" style="color: red"
+								rendered="${!empty param['error']}" />
 							<h:panelGrid columns="2" cellpadding="5">
 								<h:outputText value="#{msg['auth.username']}" />
-								<input type="text" id="username" name="j_username" />
+								<p:inputText required="true" type="text" id="username"
+									name="username" />
 								<h:outputText value="#{msg['auth.password']}" />
-								<input type="password" id="password" name="j_password" />
+								<p:inputText required="required" type="password" id="password"
+									name="password" />
 							</h:panelGrid>
 
-							<input type="submit" class="menu-button-orange"
-								value="#{msg['auth.login']}" />
+							<input type="submit" class="menu-button-orange" value="#{msg['auth.login']}" />
 						</h:panelGrid>
 					</form>
 
 					<p:link value="#{msg['auth.no_account']}"
 						href="${pageContext.request.contextPath}register.xhtml" />
 				</p:fieldset>
-			</h:form> -->
+			</h:form>
 
-			<h:form prependId="false">
+			<!-- <h:form prependId="false">
 
 				<p:panelGrid columns="1" styleClass="ui-fluid center ui-noborder">
 					<h2>Please login</h2>
@@ -56,7 +51,7 @@
 					<p:commandButton value="Login" ajax="false" />
 				</p:panelGrid>
 
-			</h:form>
+			</h:form> -->
 		</ui:define>
 	</ui:composition>
 

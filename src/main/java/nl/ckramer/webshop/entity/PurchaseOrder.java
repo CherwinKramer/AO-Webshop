@@ -1,5 +1,7 @@
 package nl.ckramer.webshop.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +32,9 @@ public class PurchaseOrder {
 	@JoinColumn(name = "USER_ID")
 	private AuthUser authUser;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="purchaseOrder")
+	private List<PurchaseOrderDetail> purchaseOrderDetails;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "LOCATION_ID")
 	private Location location;
@@ -37,4 +45,22 @@ public class PurchaseOrder {
 	@Column(name = "TRACK_AND_TRACE")
 	private String trackAndTrace;
 
+	@Override
+    public int hashCode() {
+          return new HashCodeBuilder()
+                 .append(getId())
+                 .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+          if (obj instanceof Category) {
+        	  Category other = (Category) obj;
+                 return new EqualsBuilder()
+                        .append(getId(), other.getId())
+                        .isEquals();
+          }
+          return false;
+    }	
+	
 }

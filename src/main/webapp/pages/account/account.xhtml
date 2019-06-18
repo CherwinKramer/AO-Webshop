@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/main.xhtml">
+	<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
+	<ui:define name="content">
+		<h:form id="account">
+
+			<h:panelGroup>
+				<p:dataTable value="#{accountBean.locations}" var="location"
+					id="locationTable" paginator="true" paginatorPosition="bottom">
+
+					<f:facet name="header">
+
+						<h:panelGroup styleClass="facetHeaderAccount">
+							<h:panelGrid columns="2" columnClasses="column-50,column-50">
+								<h:panelGrid columns="2" columnClasses="column-30 label,column-70 text">
+									<h:outputLabel for="_username" value="#{msg['auth.username']}" />
+									<h:outputText id="_username"
+										value="#{accountBean.authUser.username}" />
+								</h:panelGrid>
+								<h:panelGrid columns="2" columnClasses="column-30 label,column-70 text">
+									<h:outputLabel for="_email" value="#{msg['auth.email']}" />
+									<h:outputText id="_email" value="#{accountBean.authUser.email}" />
+								</h:panelGrid>
+								<h:panelGrid columns="2" columnClasses="column-30 label,column-70 text">
+									<h:outputLabel for="_phone" value="#{msg['auth.phone']}" />
+									<h:outputText id="_phone" value="#{accountBean.authUser.phone}" />
+								</h:panelGrid>
+								<h:panelGrid columns="2" columnClasses="column-30 label,column-70 text">
+									<h:outputLabel for="_role" value="#{msg['auth.role']}" />
+									<h:outputText id="_role"
+										value="#{accountBean.authUser.role.role}" />
+								</h:panelGrid>
+							</h:panelGrid>
+						</h:panelGroup>
+
+					</f:facet>
+
+					<p:column headerText="#{msg['location.name']}">
+						<h:outputText value="#{location.name}" />
+					</p:column>
+
+					<p:column headerText="#{msg['location.addressLine1']}">
+						<h:outputText value="#{location.addressLine1}" />
+					</p:column>
+
+					<p:column headerText="#{msg['location.addressLine2']}">
+						<h:outputText value="#{location.addressLine2}" />
+					</p:column>
+
+					<p:column headerText="#{msg['location.postalCode']}">
+						<h:outputText value="#{location.postalCode}" />
+					</p:column>
+
+					<p:column headerText="#{msg['location.place']}">
+						<h:outputText value="#{location.place}" />
+					</p:column>
+
+					<p:column headerText="#{msg['location.country']}">
+						<h:outputText value="#{location.country.name}" />
+					</p:column>
+
+					<p:column headerText="#{msg['common.actions']}"
+						styleClass="actions">
+						<p:commandButton value="#{msg['common.edit']}"
+							action="#{accountBean.setLocation(location)}"
+							resetValues="true" oncomplete="PF('location-dialog').show()"
+							update="location-form" />
+						<p:commandButton value="#{msg['common.delete']}"
+							action="#{accountBean.removeLocation(location)}" update="account">
+							<p:confirm header="#{msg['delete.header']}"
+								message="#{msg['delete.confirm']}" icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+			<p:commandButton value="#{msg['common.add']}" actionListener="#{accountBean.add}"
+				styleClass="menu-button-red" resetValues="true"
+				update="location-form" oncomplete="PF('location-dialog').show()" />
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{msg['common.yes']}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg['common.no']}" type="button"
+					styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+
+		<h:form id="location-form">
+			<p:dialog id="location-dialog" widgetVar="location-dialog"
+				resizable="false" header="#{msg['location.form']}" modal="true"
+				autoCentre="true" draggable="false">
+				<p:ajax event="close" oncomplete="PF('location-dialog').hide()" />
+				<ui:include src="forms/locationForm.xhtml" />
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
