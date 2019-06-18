@@ -3,38 +3,73 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition>
-	<div class="bg-dark header pl-5">
-		<h1 class="text-danger font-weight-bold font-italic">Davinci AO Webshop</h1>
+	<div class="navbar-header">
+		<p class="navbar-header-text">Davinci AO Webshop</p>
 	</div>
-	<nav class="bg-dark navbar sticky-top navbar navbar-expand-lg navbar-light bg-light">
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="#{msg['pages.index.header']}" icon="pi pi-home"
+				outcome="${pageContext.request.contextPath}/index.xhtml" />
 
-		<a class="text-danger ml-5 navbar-brand" href="index.xhtml">#{msg['pages.index.header']}</a>
+			<p:submenu label="#{msg['category.choose']}">
+				<c:forEach items="#{sessionBean.categories}" var="category">
+					<p:menuitem value="#{category.name}"
+						outcome="${pageContext.request.contextPath}/category.xhtml">
+						<f:param name="categoryId" value="#{category.id}" />                        
+					</p:menuitem>
+				</c:forEach>
+			</p:submenu>
+			
+			<sec:authorize access="isAuthenticated()">
+				<p:menuitem value="#{msg['pages.account.title']}" outcome="${pageContext.request.contextPath}/pages/account/account.xhtml" />
+				<p:menuitem value="#{msg['pages.orders.title']}" outcome="${pageContext.request.contextPath}/pages/account/orders.xhtml" />
+			</sec:authorize>
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="ml-5 navbar-nav mr-auto">
-				<li class="nav-item dropdown"><a
-					class="text-danger nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false"> #{msg['category.choose']} </a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<c:forEach items="#{categoryBean.categories}" var="category">
-							<a class="dropdown-item" href="#">#{category.name}</a> 
-						</c:forEach>
-					</div></li>
-			</ul>
-			<h:panelGrid styleClass="form-inline my-2 my-lg-0">
-				<a href="shopping_cart.xhtml" class="btn btn-outline-danger my-2 my-sm-0">#{msg['shopping_cart']}</a>
-			</h:panelGrid>
-		</div>
-	</nav>
+			<sec:authorize access="hasAuthority('ADMIN')">
+				<p:submenu label="#{msg['management']}">
+					<p:submenu label="#{msg['management.users_roles']}">
+						<p:menuitem value="#{msg['management.users']}"
+							outcome="${pageContext.request.contextPath}/pages/management/user.xhtml" />
+						<!-- <p:menuitem value="#{msg['management.roles']}"
+							outcome="${pageContext.request.contextPath}/pages/management/role.xhtml" /> -->
+					</p:submenu>
+					<p:submenu label="#{msg['management.prd_ctgy']}">
+						<p:menuitem value="#{msg['management.products']}"
+							outcome="${pageContext.request.contextPath}/pages/management/product.xhtml" />
+						<p:menuitem value="#{msg['management.categories']}"
+							outcome="${pageContext.request.contextPath}/pages/management/category.xhtml" />
+					</p:submenu>
+					<p:submenu label="#{msg['management.others']}">
+						<p:menuitem value="#{msg['management.countries']}"
+							outcome="${pageContext.request.contextPath}/pages/management/country.xhtml" />
+					</p:submenu>
+				</p:submenu>
+			</sec:authorize>
+			<f:facet name="options">
+				<sec:authorize access="isAuthenticated()">
+    				<h:outputText value="Welcome Back, #{request.userPrincipal.name}" style="margin-right: 10px;" />
+    				
+					<p:button type="button" value="#{msg['auth.logout']}"
+						outcome="${pageContext.request.contextPath}/logout.xhtml"
+						icon="pi pi-sign-in" styleClass="menu-button-orange"
+						style="margin-right: 30px;" />
+				</sec:authorize>
+				<sec:authorize access="!isAuthenticated()">
+					<p:button type="button" value="#{msg['auth.login']}"
+						outcome="${pageContext.request.contextPath}/login.xhtml"
+						icon="pi pi-sign-in" styleClass="menu-button-orange"
+						style="margin-right: 30px;" />
+				</sec:authorize>
+				<p:button type="button"
+					outcome="${pageContext.request.contextPath}/shopping_cart.xhtml"
+					value="#{msg['shopping_cart']}" icon="pi pi-shopping-cart"
+					styleClass="menu-button-red" style="margin-right:20px;" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
 </ui:composition>
 </html>

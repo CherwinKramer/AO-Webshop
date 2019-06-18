@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/WEB-INF/template/main.xhtml">
+		<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
+		<ui:define name="content">
+
+<!-- <p:messages id="messages" /> -->
+<p:growl id="messages" />
+
+<p:dataTable value="#{authRoleBean.roles}" var="role" id="roleTable">
+	<p:column headerText="#{msg['common.field.name']}">
+		<h:outputText value="#{role.name}" />
+	</p:column>
+	
+	<p:column headerText="#{msg['common.actions']}">
+		<h:form>
+			<p:commandButton value="edit" action="#{authRoleBean.role(role)}" update=":roleForm" resetValues="true" oncomplete="PF('roleDialog').show()" />
+			<p:commandButton value="remove" action="#{authRoleBean.remove(role)}" update=":roleTable, :messages">
+				<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+			</p:commandButton>
+		</h:form>
+	</p:column>
+</p:dataTable>
+
+<br />
+<h:form>
+	<p:commandButton value="add role" action="#{authRoleBean.clear()}" 
+					 update=":roleForm" 
+					 oncomplete="PF('roleDialog').show()"
+					 resetValues="true" />
+</h:form>
+
+<p:dialog widgetVar="roleDialog" closeOnEscape="true" modal="true" header="#{msg['management.roles']}">
+<h:form id="roleForm">
+	<p:messages />
+	<p:focus />
+	<p:panelGrid columns="2">
+		<p:outputLabel value="Name:" />
+		<p:inputText required="true" value="#{authRoleBean.role.name}" />
+	</p:panelGrid>
+	<p:commandButton value="save" action="#{authRoleBean.save()}" 
+					 update="roleForm, :roleTable"
+					 oncomplete="handleDialogSubmit(args, 'roleDialog')" />
+</h:form>
+</p:dialog>
+
+<h:form>
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+</h:form>
+
+
+<script type="text/javascript">
+    function handleDialogSubmit(args, dialogName) {
+        if (!args.validationFailed) {
+            PF(dialogName).hide();
+        }
+    }
+</script>
+
+</ui:define>
+</ui:composition>
+</html>

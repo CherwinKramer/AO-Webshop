@@ -5,26 +5,32 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import javax.faces.event.ActionEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
 import lombok.Setter;
+import nl.ckramer.webshop.dao.CategoryDao;
 import nl.ckramer.webshop.entity.Category;
-import nl.ckramer.webshop.service.CategoryService;
+import nl.ckramer.webshop.util.AutowireHelper;
 
 @Getter @Setter
-@Named
 @ViewScoped
+@ManagedBean(name = "categoryBean")
 public class CategoryBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private CategoryService categoryService;
+	private CategoryDao categoryDao;
+	
+	@ManagedProperty(value = "#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	private List<Category> categories;
 	
@@ -32,25 +38,23 @@ public class CategoryBean implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		categories = categoryService.findAll();
+		AutowireHelper.autowire(this);
+		categories = categoryDao.findAll();
 	}
 	
 	public void save() {
-		categoryService.save(category);
-		category = new Category();
-		setCategories(categoryService.findAll());
-		FacesContext.getCurrentInstance().addMessage
-			(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "category saved!", null));
+		categoryDao.save(category);
+		setCategories(categoryDao.findAll());
+		sessionBean.reinitializeCategories();
 	}
 	
 	public void remove(Category category) {
-		categoryService.remove(category);
-		setCategories(categoryService.findAll());
-		FacesContext.getCurrentInstance().addMessage
-			(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "category removed!", null));
+		categoryDao.delete(category);
+		setCategories(categoryDao.findAll());
+		sessionBean.reinitializeCategories();
 	}
 	
-	public void clear() {
+	public void add(ActionEvent event) {
 		category = new Category();
 	}
 

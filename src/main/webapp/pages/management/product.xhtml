@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/WEB-INF/template/main.xhtml">
+	<ui:define name="page_title">#{msg['pages.register.title']}</ui:define>
+	<ui:define name="content">
+
+		<h:form id="product">
+
+			<h:panelGroup>
+				<p:dataTable value="#{productBean.products}" var="product"
+					id="productTable" paginator="true" paginatorPosition="bottom">
+					<p:column headerText="#{msg['category.name']}">
+						<h:outputText value="#{product.category.name}" />
+					</p:column>
+
+					<p:column headerText="#{msg['common.field.name']}">
+						<h:outputText value="#{product.name}" />
+					</p:column>
+
+					<p:column headerText="#{msg['common.field.description']}">
+						<h:outputText value="#{product.description}" />
+					</p:column>
+
+					<p:column headerText="#{msg['product.price']}">
+						<h:outputText value="#{product.price}" />
+					</p:column>
+
+					<p:column headerText="#{msg['common.actions']}"
+						styleClass="actions">
+						<p:commandButton title="#{msg['common.edit']}"
+							action="#{productBean.setProduct(product)}" resetValues="false"
+							oncomplete="PF('product-dialog').show()" update="product-form"
+							icon="pi pi-pencil" />
+						<p:commandButton title="#{msg['common.delete']}"
+							icon="pi pi-trash" action="#{productBean.remove(product)}"
+							update="product">
+							<p:confirm header="#{msg['delete.header']}"
+								message="#{msg['delete.confirm']}" icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+
+			<p:commandButton value="#{msg['common.add']}"
+				styleClass="menu-button-red"
+				oncomplete="PF('product-dialog').show()" icon="pi pi-plus"
+				actionListener="#{productBean.add}" resetValues="true"
+				update="product-form" />
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{msg['common.yes']}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg['common.no']}" type="button"
+					styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+
+		<h:form id="product-form">
+			<p:dialog id="product-dialog" widgetVar="product-dialog"
+				resizable="false" header="#{msg['product.form']}" modal="true"
+				autoCentre="true" draggable="false">
+				<p:ajax event="close" oncomplete="PF('product-dialog').hide()" />
+				<ui:include src="forms/productForm.xhtml" />
+			</p:dialog>
+		</h:form>
+		
+		<script type="text/javascript">
+			function handleDialogSubmit(args, dialogName) {
+				if (!args.validationFailed) {
+					PF(dialogName).hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>
+</html>

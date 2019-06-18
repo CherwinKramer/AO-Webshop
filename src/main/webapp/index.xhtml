@@ -5,11 +5,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:composition template="/WEB-INF/template/main.xhtml">
-		<ui:define name="page_title">#{msg['pages.index.title']}</ui:define>
-		<ui:define name="content">
-			<h:outputText value="#{msg['locale']}" />
-		</ui:define>
-	</ui:composition>
-
+<ui:composition template="/WEB-INF/template/main.xhtml">
+	<ui:define name="page_title">#{msg['pages.index.title']}</ui:define>
+	<ui:define name="content">
+		<p:galleria value="#{indexBean.images}" var="image"  panelWidth="1350" panelHeight="500" showCaption="true">
+			<p:graphicImage name="img/#{image}" width="1350" alt="Image Description for #{image}" title="#{image}" />
+		</p:galleria>
+	</ui:define>
+</ui:composition>
 </html>

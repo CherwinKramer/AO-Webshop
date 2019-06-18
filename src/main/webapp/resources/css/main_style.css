@@ -1,17 +1,160 @@
-/*
- * Base structure
- */
- 
-/* Move down content because we have a fixed navbar that is 50px tall */
-.header{
-	background: #f8f9fa;
-	height:50px;
+* {
+	margin: 0;
+	padding: 0;
 }
-body{
-	min-height: 1000px;
+
+.navbar-header {
+	background-image: linear-gradient(#970000, #a40000);
+	color: black;
 }
- 
+
+.navbar-header:hover {
+	background: #970000;
+	color: #2d2d2d;
+}
+
+.navbar-header .navbar-header-text {
+	font-weight: bold; padding : 15px 0 15px 40px;
+	vertical-align: middle;
+	font-size: 40px;
+	color: inherit;
+	padding: 15px 0 15px 40px;
+}
+
+.content{
+	display: block;
+	width: 90%;
+	margin: 30px auto 0 auto;
+}
+
+.actions{
+	width: 200px;
+}
+
+body {
+	background-image:
+		url('https://www.designbolts.com/wp-content/uploads/2013/02/Nasty-Fabric-Grey-Seamless-Patterns-For-Website-Background.jpg');
+	background-repeat: repeat;
+	min-height: 600px;
+}
+
+ul li a span {
+	color: #a40000 !important;
+}
+
+.menu-button-red {
+	background-color: transparent !important;
+	color: #a40000 !important;
+	border: 1px solid #a40000 !important;
+}
+
+.menu-button-red:hover {
+	background-color: #a40000 !important;
+	color: white !important;
+}
+
+.menu-button-orange {
+	background-color: transparent !important;
+	color: #ef6d0e !important;
+	border: 1px solid #ef6d0e !important;
+}
+
+.menu-button-orange:hover {
+	background-color: #ef6d0e !important;
+	color: white !important;
+}
+
+.ui-menubar {
+	background-image: linear-gradient(silver, #b4b4b4, #b4b4b4, silver);
+	color: white !important;
+	border-top: 1px solid gray !important;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: 1px solid gray !important;
+}
+
+.ui-menu.ui-menubar>.ui-menu-list>.ui-menuitem.ui-menubar-options {
+	float: none !important;
+	position: absolute !important;
+	right: 0 !important;
+	top: 8px;
+}
+
+.ui-menuitem-link {
+	padding: 15px !important;
+}
+
+.ui-submenu-link .ui-submenu-link {
+	width: auto! important;
+}
+
+body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-icon-triangle-1-e:last-child{
+	margin-right: -1em !important;
+}
+
+body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text{ 
+	padding-right: 10px !important;
+}
+
+.ui-menu .ui-menu-parent .ui-menu-child {
+	white-space: nowrap !important;
+	width: auto !important;
+}
+
+.column-30{
+	width: 30% !important;
+}
+.column-40{
+	width: 40% !important;
+}
+.column-50{
+	width: 50% !important;
+}
+.column-60{
+	width: 60% !important;
+}
+.column-70{
+	width: 70% !important;
+}
+
+.label{
+	font-weight: bold;
+}
+
+.text{
+	font-style: oblique;
+}
+
+.facetHeaderAccount td{
+	border: none !important;
+}
+
+.actions button{
+	background: transparent;
+	border: none !important;
+	color: #2d2d2d !important;
+}
+
+.actions button:hover{
+	background: #2d2d2d;
+	border: none !important;
+	color: white !important;
+}
+
+.ui-galleria{
+	width: 100%;
+	height: 100%;
+}
+
+ .ui-panel-images {
+    width: 100%;
+    height: 100%;
+}
+
+.ui-galleria-panel {
+    width: 100%;
+    height: 100%;
+}
 /*
  * Main content
  */
- 

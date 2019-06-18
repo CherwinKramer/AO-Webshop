@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/template/main.xhtml">
+		<ui:define name="page_title">#{msg['pages.login.title']}</ui:define>
+		<ui:define name="content">
+
+			<h:form prependId="false">
+				<p:fieldset legend="#{msg['auth.login']}"
+					style="width: 400px; margin: 100px auto 0px auto;">
+					<form name="f" method="post">
+						<h:panelGrid columns="1">
+							<p:outputLabel value="#{msg['auth.login.failed']}" style="color: red"
+								rendered="${!empty param['error']}" />
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputText value="#{msg['auth.username']}" />
+								<p:inputText required="true" type="text" id="username"
+									name="username" />
+								<h:outputText value="#{msg['auth.password']}" />
+								<p:inputText required="required" type="password" id="password"
+									name="password" />
+							</h:panelGrid>
+
+							<input type="submit" class="menu-button-orange" value="#{msg['auth.login']}" />
+						</h:panelGrid>
+					</form>
+
+					<p:link value="#{msg['auth.no_account']}"
+						href="${pageContext.request.contextPath}register.xhtml" />
+				</p:fieldset>
+			</h:form>
+
+			<!-- <h:form prependId="false">
+
+				<p:panelGrid columns="1" styleClass="ui-fluid center ui-noborder">
+					<h2>Please login</h2>
+
+					<p:outputLabel value="Login failed!" styleClass="red"
+						rendered="${!empty param['error']}" />
+
+					<p:inputText id="username" placeholder="User name" />
+					<p:password id="password" placeholder="Password" />
+
+					<p:commandButton value="Login" ajax="false" />
+				</p:panelGrid>
+
+			</h:form> -->
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
